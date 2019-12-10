@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	database "github.com/ameena3/test/Database"
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
 )
@@ -34,7 +35,9 @@ var customType1 = graphql.NewObject(
 func main() {
 
 	//Initializing fake dataset here
-
+	data := database.Data{}
+	data.ConnectToDb()
+	data.GetUsers()
 	ct = []customType{customType{Id: 1, Name: "Anubhav"}, customType{Id: 2, Name: "Anubhav2"}, customType{Id: 3, Name: "Anubhav3"}, customType{Id: 4, Name: "Anubhav4"}}
 
 	fields := graphql.Fields{
