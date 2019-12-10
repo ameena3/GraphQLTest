@@ -32,26 +32,31 @@ func (d *Data) ConnectToDb() error {
 }
 
 // GetUsers ... gets the suers from the database
-func (d *Data) GetUsers() (int, error) {
+func (d *Data) GetUsers() (int, []User, error) {
 	defer d.db.Close()
+	users := []User{}
 	tsql := fmt.Sprintf("SELECT Id, First_name FROM Users;")
 	rows, err := d.db.Query(tsql)
 	if err != nil {
 		fmt.Println("Error reading rows: " + err.Error())
-		return -1, err
+		return -1, nil, err
 	}
 	defer rows.Close()
 	count := 0
 	for rows.Next() {
 		user := User{}
-		var id, firstname string
+		var id int
+		var firstname string
 		err := rows.Scan(&id, &firstname)
 		if err != nil {
 			fmt.Println("Error reading rows: " + err.Error())
-			return -1, err
+			return -1, nil, err
 		}
-		fmt.Printf("ID: %s, Name: %s \n", id, firstname)
+		user.ID = id
+		user.FirstName = firstname
+		users = append(users, user)
+		fmt.Printf("ID: %d, Name: %s \n", id, firstname)
 		count++
 	}
-	return count, err
+	return count, users, err
 }

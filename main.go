@@ -32,12 +32,37 @@ var customType1 = graphql.NewObject(
 		},
 	})
 
+var customType2 = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "customType2",
+		Fields: graphql.Fields{
+			"id": &graphql.Field{
+				Type:        graphql.Int,
+				Description: "This is the ID of the name",
+			},
+			"email": &graphql.Field{
+				Type: graphql.String,
+			},
+			"firstname": &graphql.Field{
+				Type: graphql.String,
+			},
+			"lastname": &graphql.Field{
+				Type: graphql.String,
+			},
+			"apikey": &graphql.Field{
+				Type: graphql.String,
+			},
+			"createdat": &graphql.Field{
+				Type: graphql.String,
+			},
+		},
+	})
+
 func main() {
 
 	//Initializing fake dataset here
 	data := database.Data{}
-	data.ConnectToDb()
-	data.GetUsers()
+
 	ct = []customType{customType{Id: 1, Name: "Anubhav"}, customType{Id: 2, Name: "Anubhav2"}, customType{Id: 3, Name: "Anubhav3"}, customType{Id: 4, Name: "Anubhav4"}}
 
 	fields := graphql.Fields{
@@ -74,6 +99,17 @@ func main() {
 			Type: graphql.NewList(customType1),
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 				return ct, nil
+			},
+		},
+
+		"listdb": &graphql.Field{
+			Name: "listProducts2",
+			Type: graphql.NewList(customType2),
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				data.ConnectToDb()
+				_, users, err := data.GetUsers()
+				checkerr(err)
+				return users, nil
 			},
 		},
 	}
