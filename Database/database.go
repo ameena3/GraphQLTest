@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/url"
 
+	//Importing the drivers init function
 	_ "github.com/denisenkom/go-mssqldb"
 )
 
@@ -69,6 +70,7 @@ func (d *Data) GetUsers() (int, []User, error) {
 	return count, users, err
 }
 
+// GetComplianceComputerByComplianceComputerID ...
 func (d *Data) GetComplianceComputerByComplianceComputerID(ComplianceComputerID int) (int, ComplianceComputer, error) {
 	defer d.db.Close()
 	cc := ComplianceComputer{}
@@ -109,6 +111,7 @@ func (d *Data) GetComplianceComputerByComplianceComputerID(ComplianceComputerID 
 
 }
 
+// GetListOfComplianceComputer ...
 func (d *Data) GetListOfComplianceComputer() (int, []ComplianceComputer, error) {
 	defer d.db.Close()
 	cca := []ComplianceComputer{}
